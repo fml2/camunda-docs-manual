@@ -75,17 +75,16 @@ Copy the following libraries from `$TOMCAT_DISTRIBUTION/lib` to the folder `$TOM
 
 Copy the following libraries from `$TOMCAT_DISTRIBUTION/lib` to the folder `$TOMCAT_HOME/lib/`, if present:
 
-* `graal-sdk-21.1.0.jar`
-* `icu4j-68.2.jar`
-* `js-21.1.0.jar`
-* `js-scriptengine-21.1.0.jar`
-* `regex-21.1.0.jar`
-* `truffle-api-21.1.0.jar`
+* `graal-sdk-$GRAAL_VERSION.jar`
+* `icu4j-$ICU4J_VERSION.jar`
+* `js-$GRAAL_VERSION.jar`
+* `js-scriptengine-$GRAAL_VERSION.jar`
+* `regex-$GRAAL_VERSION.jar`
+* `truffle-api-$GRAAL_VERSION.jar`
 
 ## Groovy
 
-The following libraries replace the single `groovy-all-$GROOVY_VERSION.jar` library. Copy these libraries from
-`$TOMCAT_DISTRIBUTION/lib` to the folder `$TOMCAT_HOME/lib/`, if present:
+Copy these libraries from `$TOMCAT_DISTRIBUTION/lib` to the folder `$TOMCAT_HOME/lib/`, if present:
 
 * `groovy-$GROOVY_VERSION.jar`
 * `groovy-jsr223-$GROOVY_VERSION.jar`
@@ -100,7 +99,7 @@ The following libraries replace the single `groovy-all-$GROOVY_VERSION.jar` libr
 The following steps are required to update the Camunda REST API on a Tomcat instance:
 
 1. Undeploy an existing web application with a name like `camunda-engine-rest`.
-2. Download the REST API web application archive from our [Maven Nexus Server][nexus-restapi] Alternatively, switch to the private repository for the enterprise version (credentials from license required). Choose the correct version named `$PLATFORM_VERSION/camunda-engine-rest-$PLATFORM_VERSION-tomcat.war`.
+2. Download the REST API web application archive from our [Artifact Repository][artifact-repository-restapi] Alternatively, switch to the private repository for the enterprise version (credentials from license required). Choose the correct version named `$PLATFORM_VERSION/camunda-engine-rest-$PLATFORM_VERSION-tomcat.war`.
 3. Deploy the web application archive to your Tomcat instance.
 
 ## Update Cockpit, Tasklist, and Admin
@@ -108,10 +107,10 @@ The following steps are required to update the Camunda REST API on a Tomcat inst
 The following steps are required to update the Camunda web applications Cockpit, Tasklist, and Admin on a Tomcat instance:
 
 1. Undeploy an existing web application with a name like `camunda-webapp`.
-2. Download the Camunda web application archive from our [Maven Nexus Server][nexus-webapp]. Alternatively, switch to the private repository for the enterprise version (credentials from license required). Choose the correct version named `$PLATFORM_VERSION/camunda-webapp-tomcat-$PLATFORM_VERSION.war`.
+2. Download the Camunda web application archive from our [Artifact Repository][artifact-repository-webapp]. Alternatively, switch to the private repository for the enterprise version (credentials from license required). Choose the correct version named `$PLATFORM_VERSION/camunda-webapp-tomcat-$PLATFORM_VERSION.war`.
 3. Deploy the web application archive to your Tomcat instance.
 
 [update-guide]: {{< ref "/update/minor/721-to-722/_index.md" >}}
-[nexus-restapi]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest/7.22.0/camunda-engine-rest-7.22.0-tomcat.war
-[nexus-webapp]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/webapp/camunda-webapp-tomcat/7.22.0/camunda-webapp-tomcat-7.22.0.war
+[artifact-repository-restapi]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest/7.22.0/camunda-engine-rest-7.22.0-tomcat.war
+[artifact-repository-webapp]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/webapp/camunda-webapp-tomcat/7.22.0/camunda-webapp-tomcat-7.22.0.war
 [tomcat-distribution]: https://downloads.camunda.cloud/release/camunda-bpm/tomcat/7.22/

@@ -25,6 +25,21 @@ Throughout this guide we will use a number of variables to denote common path na
 
 {{< /note >}}
 
+{{< note title="Known Limitations in Tomcat 10" class="info" >}}
+
+**<h4>Weld Class Loading Issues</h4>**
+
+In deployment scenarios involving one or more process applications with managed beans, classloading issues may occur if the WELD library is directly embedded in the WAR's `/WEB-INF/lib` folder.
+To resolve this, move the weld library away from the war and place it into the `$CATALINA_HOME/lib` folder.
+
+The above workaround is not guaranteed to work for cases with bean references between WAR deployments (WAR A referencing a bean from WAR B).
+
+The following test scenarios fail on Tomcat 10:
+
+* [CallActivityContextSwitchTest](https://github.com/camunda/camunda-bpm-platform/blob/f37877b822dabcbf3cee5806bd5833d18cdcb543/qa/integration-tests-engine/src/test/java/org/camunda/bpm/integrationtest/functional/context/CallActivityContextSwitchTest.java)
+* [CdiBeanCallActivityResolutionTest](https://github.com/camunda/camunda-bpm-platform/blob/f37877b822dabcbf3cee5806bd5833d18cdcb543/qa/integration-tests-engine/src/test/java/org/camunda/bpm/integrationtest/functional/cdi/CdiBeanCallActivityResolutionTest.java)
+{{< /note >}}
+
 
 # Setup
 
@@ -80,7 +95,7 @@ To configure a JDBC Resource you have to edit the file `$TOMCAT_HOME/conf/server
 ```
 
 For more information on the creation of JDBC datasources have a look at the documentation of your Tomcat version:
-[9.0](https://tomcat.apache.org/tomcat-9.0-doc/jndi-datasource-examples-howto.html).
+[10.1](https://tomcat.apache.org/tomcat-10.1-doc/jndi-datasource-examples-howto.html).
 
 
 ## Add Camunda Services
@@ -143,7 +158,7 @@ You have to add the file `bpm-platform.xml` to the folder `$TOMCAT_HOME/conf` or
 ## Secure Tomcat
 
 Follow the Tomcat Security Howto of your Tomcat version:
-[9.0](https://tomcat.apache.org/tomcat-9.0-doc/security-howto.html).
+[10.1](https://tomcat.apache.org/tomcat-10.1-doc/security-howto.html).
 
 In particular, go to `${TOMCAT_HOME}/webapps/` and remove the directories
 `ROOT`, `docs`, `examples`, `manager` and `host-manager`.
@@ -158,9 +173,9 @@ This section describes how to install optional Camunda 7 dependencies onto a Tom
 
 The following steps are required to deploy the applications:
 
-1. Download the Camunda 7 web application that contains both applications from our [Maven Nexus Server](https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/webapp/camunda-webapp-tomcat/).
+1. Download the Camunda 7 web application that contains both applications from our [Artifact Repository](https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/webapp/camunda-webapp-tomcat/).
    Or switch to the private repository for the enterprise version (User and password from license required).
-   Choose the correct version named `$PLATFORM_VERSION/camunda-webapp-tomcat-$PLATFORM_VERSION.war`.
+    * For [Tomcat 10](https://artifacts.camunda.com/ui/native/camunda-bpm/org/camunda/bpm/webapp/camunda-webapp-tomcat-jakarta/), the name of the artifact is `$PLATFORM_VERSION/camunda-webapp-tomcat-jakarta-$PLATFORM_VERSION.war`.
 2. Copy the war file to `$TOMCAT_HOME/webapps/camunda.war`.
    Optionally you may name it differently or extract it to a folder to deploy it to a different context path.
 3. Startup Tomcat.
@@ -171,9 +186,9 @@ The following steps are required to deploy the applications:
 
 The following steps are required to deploy the REST API:
 
-1. Download the REST API web application archive from our [Maven Nexus Server](https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest/).
+1. Download the REST API web application archive from our [Artifact Repository](https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest/).
     Or switch to the private repository for the enterprise version (User and password from license required).
-    Choose the correct version named `$PLATFORM_VERSION/camunda-engine-rest-$PLATFORM_VERSION-tomcat.war`.
+    * For [Tomcat 10](https://artifacts.camunda.com/artifactory/public/org/camunda/bpm/camunda-engine-rest-jakarta/), the name of the artifact is `$PLATFORM_VERSION/camunda-engine-rest-jakarta-$PLATFORM_VERSION-tomcat.war`.
 2. Copy the war file to `$TOMCAT_HOME/webapps`.
    Optionally you may rename it or extract it to a folder to deploy it to a specific context like `/engine-rest`.
 3. Startup Tomcat.
@@ -243,7 +258,13 @@ In order to activate Camunda Spin functionality for a process engine, a process 
 
 Add the following artifacts (if not existing) from the folder `$TOMCAT_DISTRIBUTION/lib/` to the folder `$TOMCAT_HOME/lib/`:
 
-* `groovy-all-$GROOVY_VERSION.jar`
+* `groovy-$GROOVY_VERSION.jar`
+* `groovy-jsr223-$GROOVY_VERSION.jar`
+* `groovy-json-$GROOVY_VERSION.jar`
+* `groovy-xml-$GROOVY_VERSION.jar`
+* `groovy-templates-$GROOVY_VERSION.jar`
+* `groovy-dateutil-$GROOVY_VERSION.jar`
+* `groovy-datetime-$GROOVY_VERSION.jar`
 
 
 ## Freemarker Integration

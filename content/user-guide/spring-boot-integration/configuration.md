@@ -395,7 +395,7 @@ The available properties are as follows:
 
 <tr>
 <td><code>.type</code></td>
-<td>Type of the underlying database. Possible values: <code>h2</code>, mysql, mariadb, oracle, postgres, mssql, db2.</td>
+<td>Type of the underlying database. Possible values: <code>h2</code>, mysql, oracle, postgres, mssql, db2.</td>
 <td>Will be automatically determined from datasource</td>
 </tr>
 
@@ -769,6 +769,21 @@ When setting to <code>/</code>, the legacy behavior of Camunda Spring Boot Start
   <td><code>300,000</code></td>
 </tr>
 
+<tr><td colspan="4"><b>REST API</b></td></tr>
+<tr>
+<td><code>camunda.bpm.rest-api.fetch-and-lock</code></td>
+<td><code>.queue-capacity</code></td>
+<td>Configure the blocking queue limit of long-polling ‘Fetch and Lock’ requests.</td>
+<td><code>200</code></td>
+</tr>
+
+<tr>
+<td></td>
+<td><code>.unique-worker-request</code></td>
+<td>If the flag is activated, pending requests with the same workerId are cancelled when a new request is received.</td>
+<td><code>false</code></td>
+</tr>
+
 <tr><td colspan="4"><b>Authorization</b></td></tr>
 <tr>
 <td rowspan="4"><code>camunda.bpm.authorization</code></td>
@@ -821,6 +836,42 @@ When setting to <code>/</code>, the legacy behavior of Camunda Spring Boot Start
 <td><code>.create</code></td>
 <td>Name of a "show all" filter. If set, a new filter is created on start that displays all tasks. Useful for testing on h2 db.</td>
 <td>-</td>
+</tr>
+
+<tr>
+  <td colspan="4">
+    <b>OAuth2</b>
+  </td>
+</tr>
+<tr>
+  <td rowspan="3"><code>camunda.bpm.oauth2.identity-provider</code></td>
+  <td><code>.enabled</code></td>
+  <td>Enables the OAuth2 identity provider.</td>
+  <td><code>true</code></td>
+</tr>
+<tr>
+  <td><code>.group-name-attribute</code></td>
+  <td>Enables and configures the OAuth2 Granted Authorities Mapper.</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td><code>.group-name-delimiter</code></td>
+  <td>
+    Configures the delimiter used in the OAuth2 Granted Authorities Mapper.
+    It's only used if the configured <code>group-name-attribute</code> contains <code>String</code> value.
+  </td>
+  <td><code>,</code> (comma)</td>
+</tr>
+<tr>
+  <td rowspan="2"><code>camunda.bpm.oauth2.sso-logout</code></td>
+  <td><code>.enabled</code></td>
+  <td>Activates the client initiated OIDC logout feature.</td>
+  <td><code>false</code></td>
+</tr>
+<tr>
+  <td><code>.post-logout-redirect-uri</code></td>
+  <td>Configures the URI the user is redirected after SSO logout from the provider.</td>
+  <td><code>{baseUrl}</code></td>
 </tr>
 
 </table>

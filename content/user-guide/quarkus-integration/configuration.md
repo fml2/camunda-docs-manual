@@ -99,10 +99,9 @@ You can set any process engine configuration properties under the `quarkus.camun
 convert any property names from `camelCase` to the `kebab-case` format, like in the following example:
 
 ```properties
-quarkus.camunda.cmmn-enabled=false
-quarkus.camunda.dmn-enabled=false
-quarkus.camunda.history=none
-quarkus.camunda.initialize-telemetry=false
+quarkus.camunda.generic-config.cmmn-enabled=false
+quarkus.camunda.generic-config.dmn-enabled=false
+quarkus.camunda.generic-config.history=none
 ```
 
 ### Programmatic Configuration
@@ -126,7 +125,7 @@ In the above example, a `QuarkusProcessEngineConfiguration` CDI bean defines "cu
 However, if you define the following in an `application.properties` file
 
 ```properties
-quarkus.camunda.process-engine-name=quarkusEngine
+quarkus.camunda.generic-config.process-engine-name=quarkusEngine
 ```
 
 then "quarkusEngine" will be used as the process engine name since Quarkus config sources have a higher ordinal than a 
@@ -140,10 +139,10 @@ page documents all the available properties. Convert any property names you inte
 `kebab-case` format, like in the following example:
 
 ```properties
-quarkus.camunda.job-executor.max-jobs-per-acquisition=5
-quarkus.camunda.job-executor.lock-time-in-millis=500000
-quarkus.camunda.job-executor.wait-time-in-millis=7000
-quarkus.camunda.job-executor.max-wait=65000
+quarkus.camunda.job-executor.generic-config.max-jobs-per-acquisition=5
+quarkus.camunda.job-executor.generic-config.lock-time-in-millis=500000
+quarkus.camunda.job-executor.generic-config.wait-time-in-millis=7000
+quarkus.camunda.job-executor.generic-config.max-wait=65000
 ```
 
 ## Quarkus Extension Configuration
@@ -218,19 +217,18 @@ engine configuration, job executor and data source:
 
 ```properties
 # process engine configuration
-quarkus.camunda.cmmn-enabled=false
-quarkus.camunda.dmn-enabled=false
-quarkus.camunda.history=none
-quarkus.camunda.initialize-telemetry=false
+quarkus.camunda.generic-config.cmmn-enabled=false
+quarkus.camunda.generic-config.dmn-enabled=false
+quarkus.camunda.generic-config.history=none
 
 # job executor configuration
 quarkus.camunda.job-executor.thread-pool.max-pool-size=12
 quarkus.camunda.job-executor.thread-pool.queue-size=5
-quarkus.camunda.job-executor.max-jobs-per-acquisition=5
-quarkus.camunda.job-executor.lock-time-in-millis=500000
-quarkus.camunda.job-executor.wait-time-in-millis=7000
-quarkus.camunda.job-executor.max-wait=65000
-quarkus.camunda.job-executor.backoff-time-in-millis=5
+quarkus.camunda.job-executor.generic-config.max-jobs-per-acquisition=5
+quarkus.camunda.job-executor.generic-config.lock-time-in-millis=500000
+quarkus.camunda.job-executor.generic-config.wait-time-in-millis=7000
+quarkus.camunda.job-executor.generic-config.max-wait=65000
+quarkus.camunda.job-executor.generic-config.backoff-time-in-millis=5
 
 # custom data source configuration and selection
 quarkus.datasource.my-datasource.db-kind=h2

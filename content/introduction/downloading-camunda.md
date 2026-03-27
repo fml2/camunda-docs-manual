@@ -52,8 +52,7 @@ The full distribution bundles
   If you download the full distribution for an open-source application
   server/container, the container itself is included. For example, if you download the Tomcat
   distribution, Tomcat itself is included and the Camunda binaries (process engine and
-  web apps) are pre-installed in the container. This is not true for the the Oracle WebLogic
-  and IBM WebSphere downloads; these downloads do not include the application servers themselves.
+  web apps) are pre-installed in the container.
 {{< /note >}}
 
 {{< note title="Wildfly Application Server" class="info" >}}
@@ -71,7 +70,7 @@ from the [community download page][community-download-page].
 
 
 [get-jdk]: https://www.oracle.com/technetwork/java/javase/downloads/index.html
-[community-download-page]: https://camunda.com/download/
+[community-download-page]: https://camunda.com/download-camunda-7/
 [enterprise-download-page]: /enterprise/download
 [shared-engine]: {{< ref "/introduction/architecture.md#shared-container-managed-process-engine" >}}
 [installation-guide-full]: {{< ref "/installation/_index.md" >}}

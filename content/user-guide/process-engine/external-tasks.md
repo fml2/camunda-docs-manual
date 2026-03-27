@@ -59,7 +59,7 @@ In the BPMN XML of a process definition, a service task can be declared to be pe
   camunda:topic="AddressValidation" />
 ```
 
-It is possible to define the topic name by using an [expression]({{< ref "/user-guide/process-engine/expression-language.md" >}}) instead of a constant value.
+It is possible to define the topic name by using an [expression]({{< ref "/user-guide/process-engine/expression-language/unified-expression-language.md#delegation-code" >}}) instead of a constant value.
 
 In addition, other *service-task-like* elements such as send tasks, business rule tasks, and throwing message events can be implemented with the external task pattern. See the [BPMN 2.0 implementation reference]({{< ref "/reference/bpmn20/_index.md" >}}) for details.
 
@@ -85,7 +85,7 @@ The expression is evaluated on invocations of `ExternalTaskService#complete` and
 </serviceTask>
 ```
 
-Further information on the functionality of error event definitions on external tasks can be found in the [expression language user guide]({{< ref "/user-guide/process-engine/expression-language.md#external-task-error-handling" >}}).
+Further information on the functionality of error event definitions on external tasks can be found in the [expression language user guide]({{< ref "/user-guide/process-engine/expression-language/unified-expression-language.md#external-task-error-handling" >}}).
 
 ## Rest API
 
@@ -110,7 +110,7 @@ Please also see the {{< restref page="fetchAndLock" text="REST API documentation
 
 #### Unique Worker Request
 By default, multiple workers can use the same `workerId`. In order to ensure `workerId` uniqueness on server-side, the 
-'Unique Worker Request' flag can be activated. This configuration flag effects only long-polling requests and not ordinary 
+'Unique Worker Request' flag can be activated. This configuration flag affects only long-polling requests and not ordinary 
 'Fetch and Lock' requests. If the 'Unique Worker Request' flag is activated, pending requests with the same `workerId` are 
 cancelled when a new request is received.
 
@@ -124,6 +124,22 @@ consider the following configuration snippet:
 <context-param>
   <param-name>fetch-and-lock-unique-worker-request</param-name>
   <param-value>true</param-value>
+</context-param>
+
+<!-- ... -->
+```
+
+#### Blocking Queue Capacity
+By default, the blocking queue of long-polling 'Fetch and Lock' requests has a capacity of 200, meaning that exceeding this number of requests will return an error. This value can be changed by setting the `fetch-and-lock-queue-capacity` property as a context parameter in the `engine-rest/WEB-INF/web.xml` file of the *engine-rest* artifact. If this property is absent or its value invalid, the default value will be used.
+
+Please consider the following configuration snippet:
+
+```xml
+<!-- ... -->
+
+<context-param>
+  <param-name>fetch-and-lock-queue-capacity</param-name>
+  <param-value>250</param-value>
 </context-param>
 
 <!-- ... -->
@@ -262,7 +278,7 @@ External task priorities can be specified in the BPMN model as well as overridde
 
 External task priorities can be assigned at the process or the activity level. To achieve this, the Camunda extension attribute `camunda:taskPriority` can be used.
 
-For specifying the priority, both constant values and [expressions]({{< ref "/user-guide/process-engine/expression-language.md" >}}) are supported. 
+For specifying the priority, both constant values and [expressions]({{< ref "/user-guide/process-engine/expression-language/_index.md" >}}) are supported. 
 When using a constant value, the same priority is assigned to all instances of the process or activity. 
 Expressions, on the other hand, allow assigning a different priority to each instance of the process or activity. Expression must evaluate to a number in the Java `long` range.
 The concrete value can be the result of a complex calculation and be based on user-provided data (resulting from a task form or other sources).

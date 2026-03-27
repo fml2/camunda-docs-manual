@@ -25,10 +25,10 @@ Providing flexibility for adoption of the process engine in many languages and p
 Improving the getting started experience for the users with the option to try out the REST API following along with the documentation and examples.
 
 The documentation is shipped as a single `openapi.json` file archived in a jar artifact.
-Download the Camunda REST API artifact containing the OpenAPI documentation [here][nexus-link]. Choose the correct version and then download the `jar` file.
+Download the Camunda REST API artifact containing the OpenAPI documentation [here][artifact-link]. Choose the correct version and then download the `jar` file.
 
 [spec-3.0.2]: https://github.com/OAI/OpenAPI-Specification/blob/3.0.2/versions/3.0.2.md
-[nexus-link]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest-openapi/
+[artifact-link]: https://artifacts.camunda.com/artifactory/camunda-bpm/org/camunda/bpm/camunda-engine-rest-openapi/
 
 Alternatively, you can obtain this artifact with the following Maven coordinates:
 
@@ -57,10 +57,7 @@ Follow the steps of the OpenAPI Generator's documentation, how to [install][open
 
 Instead of client generation, you can use one of the OpenAPI editors to play around with the REST API endpoints.
 
-For this reason, [Camunda 7 Run][cam-platform-run] ships with a version of [Swagger UI][swagger-ui] already included.
-You can use it to try out the REST API endpoints and read through the OpenAPI documentation.
-
-If you use a Camunda distribution other than Run, you can go to [Swagger Editor][swagger-editor] and paste the content of the openapi.json on the left-hand side in the editor.
+You can go to [Swagger Editor][swagger-editor] and paste the content of the openapi.json on the left-hand side of the editor.
 Start a Process engine with enabled cross-origin requests, and you will be able to execute requests from the editor.
 
 Some API Tools also support import of endpoints via upload of a OpenAPI document.

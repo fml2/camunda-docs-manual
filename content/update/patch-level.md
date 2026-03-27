@@ -486,6 +486,142 @@ This will allow a better experience when looking for process definitions.
 The change also affects the API that provides the data for the search component.
 This API is an internal API, which means it's **not** part of the public [REST API]({{< ref "/reference/rest" >}}), so the change should not affect any customers.
 
+## 7.21.3 to 7.21.4
+
+### Added Support for Tomcat 10
+
+This version supports all the necessary building-block modules for our users to use `camunda-bpm-platform` community and enterprise editions in conjunction with `Tomcat 10.1`.
+
+{{< note title="Heads-up!" class="warning" >}}
+
+**<h4>Jakarta Namespace</h4>**
+
+`Tomcat 10` is compatible with the `jakarta` namespace.
+If you wish to use it, the `jakarta` modules needs to be used (`camunda-webapp-tomcat-jakarta`, `camunda-engine-rest-jakarta`).
+
+The `javax` modules won't work with `Tomcat 10`.
+
+For detailed steps of manual installation, follow the [Tomcat Manual Installation Guide]({{< ref "/installation/full/tomcat/manual.md" >}})
+
+**<h4>Weld Class Loading Issues</h4>**
+In deployment scenarios involving one or more process applications with managed beans, classloading issues may occur if the WELD library is directly embedded in the WAR's `/WEB-INF/lib` folder.
+To resolve this, move the weld library away from the war and place it into the `$CATALINA_HOME/lib` folder.
+
+The above workaround is not guaranteed to work for cases with bean references between WAR deployments (WAR A referencing a bean from WAR B).
+
+The following test scenarios fail on Tomcat 10:
+
+* [CallActivityContextSwitchTest](https://github.com/camunda/camunda-bpm-platform/blob/f37877b822dabcbf3cee5806bd5833d18cdcb543/qa/integration-tests-engine/src/test/java/org/camunda/bpm/integrationtest/functional/context/CallActivityContextSwitchTest.java)
+* [CdiBeanCallActivityResolutionTest](https://github.com/camunda/camunda-bpm-platform/blob/f37877b822dabcbf3cee5806bd5833d18cdcb543/qa/integration-tests-engine/src/test/java/org/camunda/bpm/integrationtest/functional/cdi/CdiBeanCallActivityResolutionTest.java)
+{{< /note >}}
+
+## 7.22.0 to 7.22.1 / 7.21.5 to 7.21.6 / 7.20.8 to 7.20.9
+
+The 7.22.0 release [replaced the runtime with the historic process instance query]({{< ref "/update/minor/721-to-722/_index.md#cockpit-process-instance-batch-modification" >}}) in Cockpit when performing a [Process Instance Batch Modification][process-instance-modification].
+
+{{< note title="Heads-up!" class="warning" >}}
+After migrating to 7.22.1, the behavior of the `Activity ID` filter when batch modifying process instances will change back to the old behavior you are used to from Camunda versions <= 7.21.X.
+{{< /note >}}
+
+The 7.22.0 release introduced a limitation for the `Activity ID` filter: Filtering for activities marked as `asyncBefore`/`asyncAfter` with active instances didn't yield process instances when using the `Activity ID` filter.
+
+After some user feedback, we understood that there are use cases that cannot be catered with this limitation in place leading to undesired behavior.
+With this patch release, we lifted this limitation by opting for a different solution approach which restored the previous behavior.
+
+[process-instance-modification]: {{< ref "/webapps/cockpit/bpmn/process-instance-modification.md#perform-a-batch-modification" >}}
+
+### Set Variables Async API
+
+Before version 7.22.1, the Set Variables Async API failed whenever at least one of the process instances did not exist.
+
+Starting with version 7.22.1, the behavior has changed: if any of the process instances was deleted or completed, the call will still succeed. As a consequence, the Set Variables Batch Operation will also succeed in this case.
+
+Please note that this does not apply to the Sync API, which keeps its behavior and fails if the process instance does not exist.
+
+### Bootstrap NES and AngularJS NES by HeroDevs, Inc.
+
+These patches replace the following libraries with versions of Bootstrap NES and AngularJS NES by HeroDevs, Inc.:
+
+* *AngularJS* (technical names: `angular`, `angular-animate`, `angular-cookies`, `angular-loader`, `angular-mocks`, `angular-resource`, `angular-route`, `angular-sanitize`, `angular-touch`)
+*  *angular-ui-bootstrap*
+*  *angular-translate*
+*  *angular-moment*
+*  *Bootstrap*
+
+Where AngularJS, angular-ui-bootstrap, angular-translate, angular-moment, and Bootstrap were licensed entirely under the MIT license, Bootstrap NES and AngularJS NES by HeroDevs, Inc. licenses additional parts under the HeroDevs NES License. By downloading and using Camunda with Bootstrap NES and AngularJS NES by HeroDevs, Inc., you agree to the terms of the HeroDevs NES License. You can find the HeroDevs NES License terms in our [License Book]({{< ref "/introduction/third-party-libraries/camunda-bpm-platform-license-book.md" >}}).
+
+Please see our [third-party libraries documentation]({{< ref "/introduction/third-party-libraries/_index.md#web-applications-cockpit-tasklist-admin" >}}) for details.
+
+## 7.22.1 to 7.22.2 / 7.21.6 to 7.21.7 / 7.20.9 to 7.20.10
+
+### GraalVM Upgrade
+
+We are pleased to announce that the above patch releases are compatible with `GraalVM 21.3.12`
+
+The engine will automatically **disable the system property** `polyglot.engine.WarnInterpreterOnly` when a [GraalJS](https://www.graalvm.org/jdk17/reference-manual/js/) script engine is used.
+
+This adjustment ensures a smoother experience by suppressing unnecessary warnings related to `interpreter-only` execution in non-native GraalVM environments
+which might cause confusion to our users running on non-GraalVM JDKs.
+
+You can read more about the warnings [here](https://www.graalvm.org/jdk17/reference-manual/js/FAQ/#warning-implementation-does-not-support-runtime-compilation).
+
+{{< note title="Heads-up!" class="info" >}}
+If you want to ensure the best performance for JS execution, you can always configure the GraalVM Compiler with your JDK of choice, or use the GraalVM JDK.
+
+More information on how to do this can be found in the official [GraalVM documentation](https://www.graalvm.org/jdk17/reference-manual/js/RunOnJDK/#graalvm-javascript-on-jdk-11).
+{{< /note >}}
+
+## 7.23.3 to 7.23.4 / 7.22.6 to 7.22.7 / 7.21.11 to 7.21.12
+
+### Docker Base Image Update
+
+The Docker base image has been updated from Alpine Linux 3.18 to Alpine Linux 3.22.
+
+#### Migration Steps
+
+For standard Docker image usage, **no action is required** beyond pulling the 7.21.12 / 7.22.7 / 7.23.4 image.
+
+For custom Docker configurations:
+
+1. **Assess Custom Code**: Review any Alpine-specific customizations for version 3.22 compatibility
+2. **Update Dependencies**: Check that the additional packages you install are available in Alpine 3.22
+3. **Rebuild Custom Images**: Update Dockerfiles that extend the Camunda base image
+4. **Test Migration**: Verify functionality after updating to the new base image
+
+For detailed information about changes across Alpine versions, refer to the following release notes:
+
+* [Alpine Linux 3.19 Release Notes](https://alpinelinux.org/posts/Alpine-3.19.0-released.html)
+* [Alpine Linux 3.20 Release Notes](https://alpinelinux.org/posts/Alpine-3.20.0-released.html)
+* [Alpine Linux 3.21 Release Notes](https://alpinelinux.org/posts/Alpine-3.21.0-released.html)
+* [Alpine Linux 3.22 Release Notes](https://alpinelinux.org/posts/Alpine-3.22.0-released.html)
+
+See the [Alpine Linux documentation](https://wiki.alpinelinux.org/wiki/Release_Notes_for_Alpine_3.22.0) for comprehensive change details.
+
+## 7.21.12 to 7.21.13
+
+### Camunda Run: Spring Boot 3.5 Upgrade
+
+Camunda Run is now based on Spring Boot 3.5, upgrading from Spring Boot 3.3 which has reached end-of-life.
+
+#### Migration Steps
+
+For standard Camunda Run usage, **no action is required** beyond upgrading to version 7.21.13.
+
+For custom Spring Boot configurations:
+
+1. **Review Custom Configuration**: If you have applied custom Spring Boot-specific configuration to your `application.yml` or `application.properties`, ensure compatibility with Spring Boot 3.5
+2. **Update Dependencies**: If you have added custom Spring Boot dependencies, verify they are compatible with Spring Boot 3.5
+3. **Test Your Setup**: Verify that your Camunda Run instance starts and functions correctly after the upgrade
+
+#### Expected Impact
+
+We expect **no migration to be needed** for most users, as this upgrade primarily addresses security updates and dependency maintenance. The Spring Boot configuration interface remains largely compatible between versions 3.3 and 3.5.
+
+For detailed information about Spring Boot 3.5 changes, refer to the release notes:
+
+* [Spring Boot 3.4 Release Notes](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.4-Release-Notes).
+* [Spring Boot 3.5 Release Notes](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.5-Release-Notes).
+
 # Full Distribution
 
 This section is applicable if you installed the [Full Distribution]({{< ref "/introduction/downloading-camunda.md#full-distribution" >}}) with a **shared process engine**. In this case you need to update the libraries and applications installed inside the application server.

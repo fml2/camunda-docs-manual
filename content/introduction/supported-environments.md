@@ -30,32 +30,28 @@ Run Camunda in every Java-runnable environment. Camunda is supported with our QA
   * [Supported versions]({{< ref "/user-guide/quarkus-integration/version-compatibility.md" >}})
   * [Deployment scenarios]({{< ref "/user-guide/quarkus-integration/_index.md#supported-deployment-scenarios" >}})
 
-## Container-Managed Process Engine and Camunda Cockpit, Tasklist, Admin
+## Container-Managed Process Engine and Camunda Webapps
 
-* Apache Tomcat 9.0
-* JBoss EAP 7.4
-* WildFly Application Server 23.0 / 26.0 / 31.0
-* IBM WebSphere Liberty 22 with Java EE 8 features ([Enterprise Edition only](http://camunda.com/enterprise/), 
-  see [Installation guide]({{< ref "/installation/full/was/manual-liberty.md" >}}))
-* Oracle WebLogic Server 14c (14R1) ([Enterprise Edition only](http://camunda.com/enterprise/))
+* Apache Tomcat 10.1
+* JBoss EAP 8.0
+* WildFly Application Server 33.0 / 35.0 / 37.0
 
 # Databases
 
 ## Supported Database Products
 
 * MySQL  8.0
-* MariaDB 10.6
-* Oracle 19c
+* Oracle 19c / 23ai
 * IBM DB2 11.5 (excluding IBM z/OS for all versions)
-* PostgreSQL 13 / 14 / 15 / 16
-* Amazon Aurora PostgreSQL compatible with PostgreSQL 13 / 14 / 15
+* PostgreSQL 15 / 16 / 17
+* Amazon Aurora PostgreSQL compatible with PostgreSQL 14 / 15 / 16
 * Microsoft SQL Server 2017 / 2019 / 2022 (see [Configuration Note]({{< ref "/user-guide/process-engine/database/mssql-configuration.md" >}}))
 * Microsoft Azure SQL with Camunda-supported SQL Server compatibility levels 
   (see [Configuration Note]({{< ref "/user-guide/process-engine/database/mssql-configuration.md#azure-sql-compatibility-levels-supported-by-camunda" >}})): 
   * SQL Server on Azure Virtual Machines
   * Azure SQL Managed Instance
   * Azure SQL Database
-* H2 2.1 (not recommended for [Cluster Mode]({{< ref "/introduction/architecture.md#clustering-model" >}}) - see [Deployment Note]({{< ref "/user-guide/process-engine/deployments.md" >}}))
+* H2 2.3 (not recommended for [Cluster Mode]({{< ref "/introduction/architecture.md#clustering-model" >}}) - see [Deployment Note]({{< ref "/user-guide/process-engine/deployments.md" >}}))
 
 ## Database Clustering & Replication
 
@@ -71,17 +67,8 @@ Clustered or replicated databases are supported given the following conditions. 
 
 # Java
 
-* Java 11 / 17 / 21 (if supported by your application server/container)
+* Java 11 / 17 / 21 (Compatibility is tested with Eclipse Temurin JDK)
 
-
-# Java Runtime
-
-* Oracle JDK 11 / 17 / 21
-* OpenJDK 11 / 17 / 21, including builds of the following products:
-  * Oracle OpenJDK
-  * Eclipse Temurin JDK
-  * Amazon Corretto
-  * Azul Zulu
 
 # Camunda Modeler
 

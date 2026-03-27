@@ -27,7 +27,6 @@ Camunda Run is a full distribution of Camunda 7. It includes:
   * Tasklist
   * Admin
 * [REST API]({{< ref "/reference/rest/overview/_index.md" >}})
-* [Swagger UI](https://github.com/swagger-api/swagger-ui) (web application for exploring the REST API)
 * [An example application](#example-application)
 
 # Starting with Camunda Run
@@ -56,7 +55,7 @@ camunda-bpm-run
 
 Execute one of the two start scripts (`start.bat` for Windows, `start.sh` for Linux/Mac). After a few seconds, you can 
 access the Camunda web apps via http://localhost:8080/camunda/app/, the REST API via 
-http://localhost:8080/engine-rest/, and Swagger UI via http://localhost:8080/swaggerui/.
+http://localhost:8080/engine-rest/.
 
 When executing one of the two start scripts without any arguments, Camunda Run will start with a default configuration 
 as a detached process. To shut down Camunda Run in "detached" mode, use one of the two shutdown scripts (`shutdown.bat` 
@@ -87,11 +86,6 @@ The start scripts (`start.bat` for Windows, `start.sh` for Linux/Mac) accept the
       <td><code>enabled</code></td>
   </tr>
   <tr>
-      <td><code>--swaggerui</code></td>
-      <td>Enables the Swagger UI</td>
-      <td><code>enabled</code></td>
-  </tr>
-  <tr>
       <td><code>--example</code></td>
       <td>Enables the example application.</td>
       <td><code>enabled</code></td>
@@ -110,6 +104,14 @@ The start scripts (`start.bat` for Windows, `start.sh` for Linux/Mac) accept the
       <td><code>enabled</code></td>
   </tr>
   <tr>
+      <td><code>--oauth2</code></td>
+      <td>
+        Enables Spring Security OAuth2 integration.
+        See dedicated <a href="{{< ref "/user-guide/spring-boot-integration/spring-security.md" >}}">Spring Security OAuth2 Integration</a> documentation for details.
+      </td>
+      <td><code>false</code></td>
+  </tr>
+  <tr>
       <td><code>--help</code></td>
       <td>Prints a message showing the available start script arguments.</td>
       <td><code>-</code></td>
@@ -122,7 +124,7 @@ Camunda Run is also available as a Docker image. Please see the Camunda Run sect
 
 ## Optional components
 
-By default, Camunda Run launches with the web apps, REST API, Swagger UI, and example modules. If you want to enable only a subset of them, execute the start script through a command-line interface with any of the `--webapps`, `--rest`, `--swaggerui`, or `--example` properties to enable the specific modules.
+By default, Camunda Run launches with the web apps, REST API and example modules. If you want to enable only a subset of them, execute the start script through a command-line interface with any of the `--webapps`, `--rest` or `--example` properties to enable the specific modules.
 
 ### Example application
 
@@ -130,7 +132,7 @@ By default, Camunda Run deploys and launches an example application on startup.
 When launched, this application creates deployments with multiple BPMN and DMN definitions as well as form resources
 and starts instances of the defined processes.
 
-You can disable the *deployment* of the example application itself by enabling any combination of the other modules with the `--webapps`, `--rest`, and `--swaggerui` properties of the start script.
+You can disable the *deployment* of the example application itself by enabling any combination of the other modules with the `--webapps` and `--rest` properties of the start script.
 That way, the example application will not be launched and its resources will not be present on the classpath of Camunda Run.
 
 You can also disable the *launch* of the example application by setting the application property `camunda.bpm.run.example.enabled` to `false`
@@ -152,8 +154,8 @@ Camunda Run ships with two different configuration files which are both located 
   When using Camunda Run in a production environment, make sure to base your custom configuration on this one and carefully read through the security instructions.
 
 By default, Run launches with the `default.yml` configuration. To enable the `production.yml` configuration, execute the start script with the `--production` property.
-Using `--production` disables Swagger UI and the example application. They can be enabled by explicitly passing `--swaggerui` and `--example` to the start script.
-However, we do not recommended to use Swagger UI and the example application in production.
+Using `--production` disables the example application. It can be enabled by explicitly passing `--example` to the start script.
+However, we do not recommended to use the example application in production.
 
 ## Connect to a Database
 
@@ -289,6 +291,51 @@ If you want to allow cross-origin requests to the [REST API]({{< ref "/reference
       <td><code>.preflight-maxage</code></td>
       <td>Determines how long a browser can cache the result of a pre-flight request in seconds.</td>
       <td><code>1800</code></td>
+  </tr>
+</table>
+
+## REST
+
+Camunda Run can be configured to disable the REST endpoint which exposes the WADL file via a property.
+
+<table class="table desc-table">
+  <tr>
+      <th>Prefix</th>
+      <th>Property name</th>
+      <th>Description</th>
+      <th>Default value</th>
+  </tr>
+  <tr>
+      <td rowspan="15"><code>camunda.bpm.run.rest</code></td>
+      <td><code>.disable-wadl</code></td>
+      <td>Disables the REST endpoint <code>/application.wadl</code>. Web Application Description Language (WADL) is an XML description of the deployed RESTful web application.</td>
+      <td><code>false</code></td>
+  </tr>
+</table>
+
+## Deployment
+
+Camunda Run also supports configuration options for customizing the deployment.
+
+<table class="table desc-table">
+  <tr>
+      <th>Prefix</th>
+      <th>Property name</th>
+      <th>Description</th>
+      <th>Default value</th>
+  </tr>
+  <tr>
+      <td rowspan="15"><code>camunda.bpm.run.deployment</code></td>
+      <td><code>.deploy-changed-only</code></td>
+      <td>
+          <ul>
+            <li>When set to <code>true</code>, only deployments with changed resources will be deployed to the engine database.</li>
+            <li>When set to <code>false</code>, all deployments will be deployed without filtering their resources.</li>
+          </ul>
+          The property can be useful for controlling the deployment behaviour of the engine in case of restarts, similar to the
+          <a href="{{< ref "user-guide/spring-framework-integration/deployment" >}}">Spring Framework Integration</a>
+      </td>
+      <td><code>true</code></td>
   </tr>
 </table>
 
